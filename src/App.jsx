@@ -1,10 +1,10 @@
 import { use, useState } from "react";
 import "./App.css";
-import { languages, keyBoard } from "./uties";
+import { languages, keyBoard, skeletonEmoji, programmingTerms } from "./uties";
 import { clsx } from "clsx";
 
 function App() {
-  const [word, setWord] = useState("backend");
+  const [word, setWord] = useState(getRandomWord());
   const [guessedLetter, setGuessedLetter] = useState([]);
 
   const wrongGuess = guessedLetter.filter((letter) => !word.includes(letter));
@@ -79,7 +79,7 @@ function App() {
         {language}
         {isLanguageLost && (
           <span className="absolute inset-0 flex items-center justify-center text-lg pointer-events-none">
-            ☠
+            {skeletonEmoji[Math.floor(Math.random() * skeletonEmoji.length)]}
           </span>
         )}
       </span>
@@ -89,23 +89,43 @@ function App() {
   // Game Over
   function headerStatus() {
     if (GameLost) {
-      return <p className="mx-auto p-2 text-red-700">You<br/>lost</p>;
+      return (
+        <p className="mx-auto p-2 text-red-700">
+          You
+          <br />
+          lost
+        </p>
+      );
     } else if (GameWon) {
-      return <p className="mx-auto p-2 text-green-700">You<br/>won</p>;
+      return (
+        <p className="mx-auto p-2 text-green-700">
+          You
+          <br />
+          won
+        </p>
+      );
     } else {
       return (
         <p className="mx-auto p-2">
-          Guess the word within 8 attempts to keep programming safe from
+          Guess the word within 10 attempts to keep programming safe from
           Assembly
         </p>
       );
     }
   }
+
   // new game function
   function handleNewGame() {
-    setWord("backend"); // Reset to a default word or generate a new one
+    setWord(getRandomWord()); // Reset to a default word or generate a new one
     setGuessedLetter([]); // Clear the guessed letters
   }
+
+  // Reset the game state
+  function getRandomWord() {
+    const randomIndex = Math.floor(Math.random() * programmingTerms.length);
+    return programmingTerms[randomIndex];
+  }
+
   return (
     <>
       <div className="font-mono text-center grid justify-items-center align-center grid-rows-auto w-dvw gap-2 p-2">
@@ -123,11 +143,16 @@ function App() {
           <div className="m-5 flex justify-center flex-wrap w-80">
             {keyboardEls}
           </div>
-          {(GameLost || GameWon) && (<button onClick={handleNewGame} className="border-1 border-black rounded-md px-4 py-2 mb-4 bg-amber-100 hover:bg-blue-200 text-lg font-semibold">
-            new game
-          </button>)}
+          {(GameLost || GameWon) && (
+            <button
+              onClick={handleNewGame}
+              className="border-1 border-black rounded-md px-4 py-2 mb-4 bg-amber-100 hover:bg-blue-200 text-lg font-semibold"
+            >
+              new game
+            </button>
+          )}
         </main>
-        <footer className="text-center text-gray-700 w-[66%] p-2 rounded-2xl bg-amber-600">
+        <footer className="text-center text-gray-700 w-[66%] p-2 rounded-2xl border-2 border-amber-600">
           ME
         </footer>
       </div>
