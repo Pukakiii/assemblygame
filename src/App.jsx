@@ -26,10 +26,11 @@ function App() {
     const isWrong = isGuessed && !word.includes(char);
     return (
       <button
+        disabled={GameLost || GameWon} 
         key={char}
         onClick={() => addLetter(char)}
         className={clsx(
-          "border-1 border-black rounded-md px-2 py-0 m-0.5 text-lg font-semibold",
+          "disabled:opacity-50 disabled:bg-blend-multiply disabled:bg-linear-to-t disabled:from-sky-500 disabled:to-indigo-500 border-1 border-black rounded-md px-2 py-0 m-0.5 text-lg font-semibold",
           {
             "bg-green-200 hover:bg-green-300": isCorrect,
             "bg-red-200 hover:bg-red-300": isWrong,
@@ -90,7 +91,7 @@ function App() {
   function headerStatus() {
     if (GameLost) {
       return (
-        <p className="mx-auto p-2 text-red-700">
+        <p className="mx-auto p-1.5 text-red-700">
           You
           <br />
           lost
@@ -98,7 +99,7 @@ function App() {
       );
     } else if (GameWon) {
       return (
-        <p className="mx-auto p-2 text-green-700">
+        <p className="mx-auto p-1.5 text-green-700">
           You
           <br />
           won
@@ -106,7 +107,7 @@ function App() {
       );
     } else {
       return (
-        <p className="mx-auto p-2">
+        <p className="mx-auto p-1.5">
           Guess the word within 10 attempts to keep programming safe from
           Assembly
         </p>
